@@ -1,32 +1,28 @@
 #include<stdio.h>
 #include<stdlib.h>
-//practicing parsing in C!
-
-//literally super unreliable but idrc tbf
-typedef struct{
-    char* text[254];
-}string;
-
-typedef struct{
-    string name;
-    string last_name;
-} Person;
-
-typedef struct{
-    string brand;
-    int year;
-    Person owner;
-}Car;
+#include<SDL2/SDL.h>
+//forget the file parsing i wanna raytrace
 
 int main(){
-    FILE *pfile;
-    Person p1;
-    Car c1;
-    p1.name.text[0] = (char*)"Mehdi";
-    p1.last_name.text[0] = (char*)"Ben_Rebah";
-    c1.owner = p1;
-    c1.brand.text[0] = (char*)"Volvo";
-    c1.year = 1996;
-    pfile = fopen("prog.txt", "a");
-    fprintf(pfile, "%s %s %s %d\n", (char *)*p1.name.text, (char *)*p1.last_name.text, (char *)*c1.brand.text, c1.year);
+    const int width=900;
+    const int height=600;
+    SDL_Window *pwindow = SDL_CreateWindow("Raytracing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+    SDL_Surface *psurface = SDL_GetWindowSurface(pwindow);
+    Uint8 r,g,b;
+    r = 0xff;
+    g = 0xff;
+    b = 0x00;
+    Uint32 color = SDL_MapRGB(psurface->format, r,g,b);
+    SDL_FillRect(psurface,NULL,color);
+    SDL_UpdateWindowSurface(pwindow);
+    int running = 1;
+    while(running){
+        SDL_Event e;
+        while(SDL_PollEvent(&e)){
+            if(e.type==SDL_QUIT){
+                running = 0;
+            }
+        }
+        SDL_Delay(20);
+    }
 }
