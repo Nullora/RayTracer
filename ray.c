@@ -15,13 +15,13 @@ struct Circle{
 //we loop through each pixel in the boundaries we made. the boundaries are a square surrounding the circle we wanna make.
 //if the distance from the center to the current pixel is less than radius, we draw it.
 void FillCircle(SDL_Surface* surf, struct Circle circ, Uint32 color){
-    //to save computation power
     double radius_sqrd = pow(circ.rad, 2);
     SDL_Rect pix;
     //loop through horizontal pixels
     for(double x=circ.x-circ.rad; x<=circ.x+circ.rad;x++){
         //loop through vertical pixels
         for(double y=circ.y-circ.rad; y<=circ.y+circ.rad;y++){
+            //simple pythagorean theorem but we dont find the root of the square to save computation power
             double distance_sqrd = pow(x-circ.x,2)+pow(y-circ.y,2);
             if(distance_sqrd<radius_sqrd){
                 pix = (SDL_Rect){x,y,1,1};
