@@ -2,6 +2,7 @@
 #include<stdlib.h>
 //practicing parsing in C!
 
+//literally super unreliable but idrc tbf
 typedef struct{
     char* text[254];
 }string;
