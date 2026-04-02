@@ -2,11 +2,13 @@
 #include<stdlib.h>
 #include<SDL2/SDL.h>
 #include<math.h>
+//background
 #define back 0xffffffff
 
 struct Circle{
     double x;
     double y;
+    Uint32 color;
     double rad;
 };
 
@@ -14,7 +16,7 @@ struct Circle{
 //y=center y-radius(bottom boundary) y+radius(top boundary)
 //we loop through each pixel in the boundaries we made. the boundaries are a square surrounding the circle we wanna make.
 //if the distance from the center to the current pixel is less than radius, we draw it.
-void FillCircle(SDL_Surface* surf, struct Circle circ, Uint32 color){
+void FillCircle(SDL_Surface* surf, struct Circle circ){
     double radius_sqrd = pow(circ.rad, 2);
     SDL_Rect pix;
     //loop through horizontal pixels
@@ -25,7 +27,7 @@ void FillCircle(SDL_Surface* surf, struct Circle circ, Uint32 color){
             double distance_sqrd = pow(x-circ.x,2)+pow(y-circ.y,2);
             if(distance_sqrd<radius_sqrd){
                 pix = (SDL_Rect){x,y,1,1};
-                SDL_FillRect(surf, &pix, color);
+                SDL_FillRect(surf, &pix, circ.color);
             }
         }
     }
@@ -44,8 +46,8 @@ int main(){
     SDL_FillRect(psurface, NULL, back);
 
     struct Circle circ;
-    circ.x = 200; circ.y = 200; circ.rad = 80;
-    FillCircle(psurface, circ, color);
+    circ.x = 200; circ.y = 200; circ.rad = 80; circ.color = color;
+    FillCircle(psurface, circ);
     SDL_UpdateWindowSurface(pwindow);
 
 
