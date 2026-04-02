@@ -44,8 +44,8 @@ void FillCircle(SDL_Surface* surf, Circle circ){
 void FillRect(SDL_Surface* surf, Uint32 color){
     Uint32* pixels = (Uint32*)surf->pixels;
     int pitch = surf->pitch / 4; //same reason, we divide by 4 to convert to pixels
-    for(int y = 0; y<height;y++){
-        for(int x = 0; x<width;x++){
+    for(int y = 0; y<surf->h;y++){
+        for(int x = 0; x<surf->w;x++){
             pixels[y*pitch+x] = color;
         }
     }
