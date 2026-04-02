@@ -52,14 +52,17 @@ int main(){
 
 
     int running = 1;
+    SDL_Event e;
     while(running){
-        SDL_Event e;
+        //quit
         while(SDL_PollEvent(&e)){
             if(e.type==SDL_QUIT){
-                SDL_Quit();
-                return 0;
+                running = 0;
             }
         }
+        circ.x++;
+        FillCircle(psurface, circ);
+        SDL_UpdateWindowSurface(pwindow);
         SDL_Delay(15);
     }
     SDL_Quit();
