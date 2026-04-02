@@ -78,6 +78,7 @@ int main(){
             if(e.type==SDL_QUIT){
                 running = 0;
             }
+            //get mouse motion
             if(e.type==SDL_MOUSEMOTION && e.motion.state == SDL_PRESSED){
                 circ.x = e.motion.x;
                 circ.y = e.motion.y;
