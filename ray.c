@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<SDL2/SDL.h>
-#include<math.h>
 //background
 #define back 0x00000000
 
@@ -17,14 +16,16 @@ typedef struct{
 //we loop through each pixel in the boundaries we made. the boundaries are a square surrounding the circle we wanna make.
 //if the distance from the center to the current pixel is less than radius, we draw it.
 void FillCircle(SDL_Surface* surf, Circle circ){
-    double radius_sqrd = pow(circ.rad, 2);
+    //we dont use pow because we want this to run as efficiently as possible
+    //pow is made for complex shit not a simple square
+    double radius_sqrd = (circ.rad*circ.rad);
     SDL_Rect pix;
     //loop through horizontal pixels
     for(double x=circ.x-circ.rad; x<=circ.x+circ.rad;x++){
         //loop through vertical pixels
         for(double y=circ.y-circ.rad; y<=circ.y+circ.rad;y++){
             //simple pythagorean theorem but we dont find the root of the square to save computation power
-            double distance_sqrd = pow(x-circ.x,2)+pow(y-circ.y,2);
+            double distance_sqrd = (x - circ.x) * (x - circ.x) + (y - circ.y) * (y - circ.y);
             if(distance_sqrd<radius_sqrd){
                 pix = (SDL_Rect){x,y,1,1};
                 SDL_FillRect(surf, &pix, circ.color);
@@ -46,7 +47,7 @@ int main(){
     SDL_FillRect(psurface, NULL, back);
 
     Circle circ;
-    circ.x = 200; circ.y = 200; circ.rad = 80; circ.color = color;
+    circ.x = 200; circ.y = 200; circ.rad = 50; circ.color = color;
     FillCircle(psurface, circ);
     SDL_UpdateWindowSurface(pwindow);
 
