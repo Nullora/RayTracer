@@ -6,4 +6,4 @@ Vulkan and it went south so i started with 2d CPU based SDL2. I chose CPU only s
 You can read the comments on my code to know why I made each decision. Again thanks to Daniel Hirsch for the detailed explanation.
 # Note
 I only posted this on GitHub to document it for others who might want to get into 3d graphics and don't wanna jump in the deep water yet.
-This is not meant to be polished and not meant for any actual use other than messing around for funsies!
+This is not meant to be polished and not meant for any actual use other than messing around for fun!

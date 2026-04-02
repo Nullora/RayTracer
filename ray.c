@@ -3,7 +3,7 @@
 #include<SDL2/SDL.h>
 #include<math.h>
 //background
-#define back 0xffffffff
+#define back 0x00000000
 
 typedef struct{
     double x;
@@ -54,17 +54,21 @@ int main(){
     int running = 1;
     SDL_Event e;
     while(running){
-        //quit
         while(SDL_PollEvent(&e)){
+            //quit
             if(e.type==SDL_QUIT){
                 running = 0;
             }
+            if(e.type==SDL_MOUSEMOTION && e.motion.state == SDL_PRESSED){
+                circ.x = e.motion.x;
+                circ.y = e.motion.y;
+
+            }
         }
-        circ.x++;
         SDL_FillRect(psurface, NULL, back);
         FillCircle(psurface, circ);
         SDL_UpdateWindowSurface(pwindow);
-        SDL_Delay(15);
+        SDL_Delay(5);
     }
     SDL_Quit();
     return 0;
