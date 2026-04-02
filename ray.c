@@ -61,6 +61,7 @@ int main(){
             }
         }
         circ.x++;
+        SDL_FillRect(psurface, NULL, back);
         FillCircle(psurface, circ);
         SDL_UpdateWindowSurface(pwindow);
         SDL_Delay(15);
