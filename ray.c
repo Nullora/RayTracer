@@ -10,7 +10,8 @@ typedef struct{
     Uint32 color;
     double rad;
 }Circle;
-
+int width;
+int height;
 //x=center x-radius(left boundary) and x+radius(right boundary)
 //y=center y-radius(bottom boundary) y+radius(top boundary)
 //we loop through each pixel in the boundaries we made. the boundaries are a square surrounding the circle we wanna make.
@@ -19,24 +20,41 @@ void FillCircle(SDL_Surface* surf, Circle circ){
     //we dont use pow because we want this to run as efficiently as possible
     //pow is made for complex shit not a simple square
     double radius_sqrd = (circ.rad*circ.rad);
-    SDL_Rect pix;
+
+    //we write directly to memory instead of calling fillRect()
+    //much much faster this way
+    Uint32* pixels = (Uint32*)surf->pixels;
+    int pitch = surf->pitch / 4; //pitch is in bytes, convert to pixels
+
     //loop through horizontal pixels
-    for(double x=circ.x-circ.rad; x<=circ.x+circ.rad;x++){
+    for(int x=circ.x-circ.rad; x<=circ.x+circ.rad;x++){
         //loop through vertical pixels
-        for(double y=circ.y-circ.rad; y<=circ.y+circ.rad;y++){
+        for(int y=circ.y-circ.rad; y<=circ.y+circ.rad;y++){
             //simple pythagorean theorem but we dont find the root of the square to save computation power
-            double distance_sqrd = (x - circ.x) * (x - circ.x) + (y - circ.y) * (y - circ.y);
-            if(distance_sqrd<radius_sqrd){
-                pix = (SDL_Rect){x,y,1,1};
-                SDL_FillRect(surf, &pix, circ.color);
+            double dx = x - circ.x;
+            double dy = y - circ.y;
+            if ((dx * dx + dy * dy) <= radius_sqrd){
+                //the little equation inside has an explanation in "Documentation/why.md"
+                pixels[y * pitch + x] = circ.color;
             }
         }
     }
 }
+//i made my own FillRect but removed the overhead to make it faster
+void FillRect(SDL_Surface* surf, Uint32 color){
+    Uint32* pixels = (Uint32*)surf->pixels;
+    int pitch = surf->pitch / 4; //same reason, we divide by 4 to convert to pixels
+    for(int y = 0; y<height;y++){
+        for(int x = 0; x<width;x++){
+            pixels[y*pitch+x] = color;
+        }
+    }
+}
+
 
 int main(){
-    const int width = 900;
-    const int height = 600;
+    width = 900;
+    height = 600;
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *pwindow = SDL_CreateWindow("Raytracing 2.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
     SDL_Surface *psurface = SDL_GetWindowSurface(pwindow);
@@ -44,7 +62,7 @@ int main(){
     //i do this so i can easily adjust rgb values later without messing with a long ass hex number
     Uint32 color = SDL_MapRGB(psurface->format, r,g,b);
     //background
-    SDL_FillRect(psurface, NULL, back);
+    FillRect(psurface, back);
 
     Circle circ;
     circ.x = 200; circ.y = 200; circ.rad = 50; circ.color = color;
@@ -66,7 +84,7 @@ int main(){
 
             }
         }
-        SDL_FillRect(psurface, NULL, back);
+        FillRect(psurface, back);
         FillCircle(psurface, circ);
         SDL_UpdateWindowSurface(pwindow);
         SDL_Delay(5);
