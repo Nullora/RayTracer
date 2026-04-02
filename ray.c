@@ -5,18 +5,18 @@
 //background
 #define back 0xffffffff
 
-struct Circle{
+typedef struct{
     double x;
     double y;
     Uint32 color;
     double rad;
-};
+}Circle;
 
 //x=center x-radius(left boundary) and x+radius(right boundary)
 //y=center y-radius(bottom boundary) y+radius(top boundary)
 //we loop through each pixel in the boundaries we made. the boundaries are a square surrounding the circle we wanna make.
 //if the distance from the center to the current pixel is less than radius, we draw it.
-void FillCircle(SDL_Surface* surf, struct Circle circ){
+void FillCircle(SDL_Surface* surf, Circle circ){
     double radius_sqrd = pow(circ.rad, 2);
     SDL_Rect pix;
     //loop through horizontal pixels
@@ -45,7 +45,7 @@ int main(){
     //background
     SDL_FillRect(psurface, NULL, back);
 
-    struct Circle circ;
+    Circle circ;
     circ.x = 200; circ.y = 200; circ.rad = 80; circ.color = color;
     FillCircle(psurface, circ);
     SDL_UpdateWindowSurface(pwindow);
