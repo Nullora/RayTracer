@@ -33,6 +33,7 @@ void FillCircle(SDL_Surface* surf, Circle circ){
     int startY = circ.y - circ.rad;
     int endY   = circ.y + circ.rad;
     //  we assign startX, endX, startY, endY
+    //were clipping them to not exceed the boundary and try to access foreign memory
     if (startX < 0) startX = 0;
     if (startY < 0) startY = 0;
     if (endX >= surf->w) endX = surf->w - 1;
@@ -70,14 +71,14 @@ int main(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *pwindow = SDL_CreateWindow("Raytracing 2.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
     SDL_Surface *psurface = SDL_GetWindowSurface(pwindow);
-    Uint8 r=0xff,g=0,b=0xff;
+    Uint8 r=0x00,g=0,b=0xff;
     //i do this so i can easily adjust rgb values later without messing with a long ass hex number
     Uint32 color = SDL_MapRGB(psurface->format, r,g,b);
     //background
     FillRect(psurface, back);
 
     Circle circ;
-    circ.x = 200; circ.y = 200; circ.rad = 50; circ.color = color;
+    circ.x = 500; circ.y = 500; circ.rad = 50; circ.color = color;
     FillCircle(psurface, circ);
     SDL_UpdateWindowSurface(pwindow);
 
@@ -86,17 +87,18 @@ int main(){
     SDL_Event e;
     while(running){
         while(SDL_PollEvent(&e)){
+
+
             //quit
             if(e.type==SDL_QUIT){
                 running = 0;
             }
-            //get mouse motion
-            if(e.type==SDL_MOUSEMOTION && e.motion.state == SDL_PRESSED){
-                circ.x = e.motion.x;
-                if(e.motion.y < height){
-                    circ.y = e.motion.y;
-                }
 
+
+            //change circle position
+            if(e.type==SDL_MOUSEMOTION && e.motion.state == SDL_PRESSED){
+                circ.y = e.motion.y;
+                circ.x = e.motion.x;
             }
         }
         FillRect(psurface, back);
