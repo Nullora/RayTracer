@@ -66,10 +66,9 @@ void FillRect(SDL_Surface* surf, Uint32 color){
 
 
 int main(){
-    width = 900;
-    height = 600;
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window *pwindow = SDL_CreateWindow("Raytracing 2.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+    width = 1550;
+    height = 1000;
+    SDL_Window *pwindow = SDL_CreateWindow("heni mfaggas", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
     SDL_Surface *psurface = SDL_GetWindowSurface(pwindow);
     Uint8 r=0x00,g=0,b=0xff;
     //i do this so i can easily adjust rgb values later without messing with a long ass hex number
@@ -104,7 +103,7 @@ int main(){
         FillRect(psurface, back);
         FillCircle(psurface, circ);
         SDL_UpdateWindowSurface(pwindow);
-        SDL_Delay(5);
+        SDL_Delay(1);
     }
     SDL_Quit();
     return 0;
