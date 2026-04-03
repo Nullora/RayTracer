@@ -26,10 +26,22 @@ void FillCircle(SDL_Surface* surf, Circle circ){
     Uint32* pixels = (Uint32*)surf->pixels;
     int pitch = surf->pitch / 4; //pitch is in bytes, convert to pixels
 
+
+    //  boundaries to prevent segfault
+    int startX = circ.x - circ.rad;
+    int endX   = circ.x + circ.rad;
+    int startY = circ.y - circ.rad;
+    int endY   = circ.y + circ.rad;
+    //  we assign startX, endX, startY, endY
+    if (startX < 0) startX = 0;
+    if (startY < 0) startY = 0;
+    if (endX >= surf->w) endX = surf->w - 1;
+    if (endY >= surf->h) endY = surf->h - 1;
+
     //loop through horizontal pixels
-    for(int x=circ.x-circ.rad; x<=circ.x+circ.rad;x++){
+    for(int x=startX; x<=endX;x++){
         //loop through vertical pixels
-        for(int y=circ.y-circ.rad; y<=circ.y+circ.rad;y++){
+        for(int y=startY; y<=endY;y++){
             //simple pythagorean theorem but we dont find the root of the square to save computation power
             double dx = x - circ.x;
             double dy = y - circ.y;
@@ -81,7 +93,9 @@ int main(){
             //get mouse motion
             if(e.type==SDL_MOUSEMOTION && e.motion.state == SDL_PRESSED){
                 circ.x = e.motion.x;
-                circ.y = e.motion.y;
+                if(e.motion.y < height){
+                    circ.y = e.motion.y;
+                }
 
             }
         }
